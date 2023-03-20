@@ -1,0 +1,17 @@
+import bluetooth
+nearby_devices = bluetooth.discover_devices(lookup_names=True)
+print("found %d devices" % len(nearby_devices))
+
+for addr, name in nearby_devices:
+
+     print(" %s - %s" % (addr, name))
+
+if(len(nearby_devices) > 0):
+     points = getPoints()
+     start = time.time()
+     reco= Recognizer(classes)
+     results = reco.recognize(points)
+     end=time.time()
+     duration = end-start
+     print (results)
+     print(duration)
