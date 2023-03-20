@@ -1,0 +1,72 @@
+def getPoint(vidPath):
+  with mp_holistic.Holistic (static_image_mode=True ,
+              min_detection_confidence=0.3,min_tracking_confidence=0.5) as holisitc :
+    #right_shoulder=[]
+    #left_shoulder=[]
+    right_wrist=[]
+    left_wrist=[]
+    right_elbow=[]
+    left_elbow=[]
+    left_heel=[]
+    right_heel=[]
+    left_foot=[]
+    right_foot=[]
+    points=[]
+    
+    
+    video = cv2.VideoCapture(vidPath)
+    while video.isOpened():
+        ret, frame = video.read()
+
+        # Recolor Feed
+        if ret==True:
+            image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            image.flags.writeable = False        
+
+            results = holisitc.process((image))
+            if results.pose_landmarks :
+              right_wrist.append(
+                  Point(results.pose_landmarks.landmark[16].x,
+                        results.pose_landmarks.landmark[16].y,
+                        1)
+                  )
+              left_wrist.append(
+                Point(results.pose_landmarks.landmark[15].x,
+                      results.pose_landmarks.landmark[15].y,
+                      2)
+                )
+              right_elbow.append(
+                Point(results.pose_landmarks.landmark[14].x,
+                      results.pose_landmarks.landmark[14].y,
+                      3)
+                )
+              left_elbow.append(
+                Point(results.pose_landmarks.landmark[13].x,
+                      results.pose_landmarks.landmark[13].y,
+                      4)
+               )
+              right_heel.append(
+                Point(results.pose_landmarks.landmark[30].x,
+                      results.pose_landmarks.landmark[30].y,
+                      5)
+                )
+              left_heel.append(
+                Point(results.pose_landmarks.landmark[29].x,
+                      results.pose_landmarks.landmark[29].y,
+                      6)
+               )
+              right_foot.append(
+                Point(results.pose_landmarks.landmark[32].x,
+                      results.pose_landmarks.landmark[32].y,
+                      7)
+                )
+              left_foot.append(
+                Point(results.pose_landmarks.landmark[31].x,
+                      results.pose_landmarks.landmark[31].y,
+                      8)
+               )
+               
+        else :
+          break   
+    points = right_wrist + left_wrist + right_elbow + left_elbow + right_heel + left_heel + right_foot + left_foot
+    return points       
