@@ -1,0 +1,24 @@
+public bool recieveMessage()
+    {
+        try
+        {
+            byte[] receiveBuffer = new byte[1024];
+            int bytesReceived = stream.Read(receiveBuffer, 0, receiveBuffer.Count());
+            string data = Encoding.UTF8.GetString(receiveBuffer);
+            points = data.Split(' ');
+            xBall = Single.Parse(points[0]);
+            yBall = Single.Parse(points[1]);
+            Console.WriteLine($"This is what the peer sent to you: {data}");
+            Console.WriteLine(xBall + " " + yBall);
+            return true;
+
+            //stream = tcpClient.GetStream();
+            //var ms =stream.Read;
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Connection not initialized : " + e);
+            return false;
+        }
+    }
