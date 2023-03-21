@@ -22,3 +22,12 @@ public bool recieveMessage()
             return false;
         }
     }
+}
+public void refresh(TuioTime frameTime) 
+{
+    Invalidate();
+    if (this.connectToSocket("127.0.0.1", 63000))
+    {
+        this.recieveMessage();
+    }
+}
