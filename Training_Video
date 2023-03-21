@@ -117,7 +117,9 @@ def getPoints():
                     frame,
                     results.right_hand_landmarks, 
                     mp_holistic.HAND_CONNECTIONS)
-                    
+                    x = results.pose_landmarks.landmark[16].x
+                    y = results.pose_landmarks.landmark[16].y
+                    con.send(bytes('{} {}'.format(x, y), encoding='utf-8'))#send
                     
             # Display the frame
             cv2.imshow('Holistic Model', frame)
