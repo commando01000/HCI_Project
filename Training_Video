@@ -106,6 +106,9 @@ def getPoints():
                     frame, 
                     results.left_hand_landmarks, 
                     mp_holistic.HAND_CONNECTIONS)
+                    x = results.pose_landmarks.landmark[15].x
+                    y = results.pose_landmarks.landmark[15].y
+                    con.send(bytes('{} {}'.format(x, y), encoding='utf-8'))#send
             
             if results.right_hand_landmarks:
                     #x = hand_landmarks.landmark[8].x  
