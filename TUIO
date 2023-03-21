@@ -1,0 +1,48 @@
+if (objectList.Count > 0) {
+ 				lock(objectList) {
+					foreach (TuioObject tobj in objectList.Values) {
+						int ox = tobj.getScreenX(width);
+						int oy = tobj.getScreenY(height);
+						int size = height / 10;
+
+						g.TranslateTransform(ox, oy);
+						g.RotateTransform((float)(tobj.Angle / Math.PI * 180.0f));
+						g.TranslateTransform(-ox, -oy);
+
+						g.FillRectangle(objBrush, new Rectangle(ox - size / 2, oy - size / 2, size, size));
+
+						g.TranslateTransform(ox, oy);
+						g.RotateTransform(-1 * (float)(tobj.Angle / Math.PI * 180.0f));
+						g.TranslateTransform(-ox, -oy);
+
+						if(tobj.SymbolID == 24)
+						{
+							g.DrawString("Door", font, fntBrush, new PointF(ox - 10, oy - 10));
+						}
+						else if(tobj.SymbolID == 25)
+						{
+							g.DrawString("Wall", font, fntBrush, new PointF(ox - 10, oy - 10));
+						}
+						else if (tobj.SymbolID == 26)
+						{
+							g.DrawString("Chair", font, fntBrush, new PointF(ox - 10, oy - 10));
+						}
+						else if (tobj.SymbolID == 27)
+						{
+							g.DrawString("Bed", font, fntBrush, new PointF(ox - 10, oy - 10));
+						}
+						else if (tobj.SymbolID == 28)
+						{
+							g.DrawString("Table", font, fntBrush, new PointF(ox - 10, oy - 10));
+						}
+						else if (tobj.SymbolID == 29)
+						{
+							g.DrawString("Pen", font, fntBrush, new PointF(ox - 10, oy - 10));
+						}
+						else if (tobj.SymbolID == 30)
+						{
+							g.DrawString("Paper", font, fntBrush, new PointF(ox - 10, oy - 10));
+						}
+					}
+				}
+			}
