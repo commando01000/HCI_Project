@@ -1,6 +1,6 @@
 def getPoint(vidPath):
   with mp_holistic.Holistic (static_image_mode=True ,
-              min_detection_confidence=0.3,min_tracking_confidence=0.5) as holisitc :
+              min_detection_confidence=0.5,min_tracking_confidence=0.5) as holisitc :
     #right_shoulder=[]
     #left_shoulder=[]
     right_wrist=[]
