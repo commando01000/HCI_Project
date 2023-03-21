@@ -1,0 +1,126 @@
+import time 
+
+ 
+
+def getPoints():
+  with mp_holistic.Holistic (static_image_mode=True ,
+              min_detection_confidence=0.5,min_tracking_confidence=0.5) as holisitc :
+    #right_shoulder=[]
+    #left_shoulder=[]
+    right_wrist=[]
+    left_wrist=[]
+    right_elbow=[]
+    left_elbow=[]
+    left_heel=[]
+    right_heel=[]
+    left_foot=[]
+    right_foot=[]
+    points=[]
+    
+    
+    video = cv2.VideoCapture(0)
+    while video.isOpened():
+        ret, frame = video.read()
+
+        # Recolor Feed
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break   
+        if ret == True:
+            image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            image.flags.writeable = False        
+
+            results = holisitc.process(image)
+            mp_drawing.draw_landmarks(
+            frame,
+            results.face_landmarks,
+            mp_holistic.FACEMESH_TESSELATION,
+            landmark_drawing_spec=None,
+            connection_drawing_spec=mp_drawing_styles
+            .get_default_face_mesh_tesselation_style())
+            # mp_drawing.draw_landmarks(
+            # frame, 
+            # results.left_hand_landmarks, 
+            # mp_holistic.HAND_CONNECTIONS)
+
+            # mp_drawing.draw_landmarks(
+            #     frame, 
+            #     results.right_hand_landmarks, 
+            #     mp_holistic.HAND_CONNECTIONS)
+            
+            if results.pose_landmarks:
+                mp.solutions.drawing_utils.draw_landmarks(
+                    frame, results.pose_landmarks, mp_holistic.POSE_CONNECTIONS)
+                right_wrist.append(
+                  Point(results.pose_landmarks.landmark[16].x,
+                        results.pose_landmarks.landmark[16].y,
+                        1)
+                  )
+                left_wrist.append(
+                  Point(results.pose_landmarks.landmark[15].x,
+                        results.pose_landmarks.landmark[15].y,
+                        2)
+                  )
+                right_elbow.append(
+                  Point(results.pose_landmarks.landmark[14].x,
+                        results.pose_landmarks.landmark[14].y,
+                        3)
+                  )
+                left_elbow.append(
+                  Point(results.pose_landmarks.landmark[13].x,
+                        results.pose_landmarks.landmark[13].y,
+                        4)
+                  )
+                right_heel.append(
+                Point(results.pose_landmarks.landmark[30].x,
+                      results.pose_landmarks.landmark[30].y,
+                      5)
+                )
+                left_heel.append(
+                  Point(results.pose_landmarks.landmark[29].x,
+                        results.pose_landmarks.landmark[29].y,
+                        6)
+                )
+                right_foot.append(
+                  Point(results.pose_landmarks.landmark[32].x,
+                        results.pose_landmarks.landmark[32].y,
+                        7)
+                  )
+                left_foot.append(
+                  Point(results.pose_landmarks.landmark[31].x,
+                        results.pose_landmarks.landmark[31].y,
+                        8)
+                )
+                # Get coordinates of nose landmark
+                image_height, image_width, _ = frame.shape
+                #x = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.NOSE].x * image_width
+                #y = results.pose_landmarks.landmark[mp_holistic.PoseLandmark.NOSE].y * image_height
+                #TODO: Open file and write coordinates
+                #with open("points.txt", "a") as f:
+                    #f.write(f"X: {x} Y: {y}\n")
+
+            if results.left_hand_landmarks:
+                
+                    #x = hand_landmarks.landmark[8].x  
+                    #y = hand_landmarks.landmark[8].y 
+                    mp_drawing.draw_landmarks(
+                    frame, 
+                    results.left_hand_landmarks, 
+                    mp_holistic.HAND_CONNECTIONS)
+            
+            if results.right_hand_landmarks:
+                    #x = hand_landmarks.landmark[8].x  
+                    #y = hand_landmarks.landmark[8].y 
+                    mp_drawing.draw_landmarks(
+                    frame,
+                    results.right_hand_landmarks, 
+                    mp_holistic.HAND_CONNECTIONS)
+                    
+                    
+            # Display the frame
+            cv2.imshow('Holistic Model', frame)
+        # Wait for key event to exit
+    # Release video capture device and close window
+    video.release()
+    cv2.destroyAllWindows()    
+    points = right_wrist + left_wrist + right_elbow + left_elbow + right_heel + left_heel + right_foot + left_foot
+    return points
