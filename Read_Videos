@@ -1,0 +1,45 @@
+classes=[]
+
+ pth = "C://Users//Andrew//Downloads//HCI_Project//M_1.mp4" #path of video 
+points = getPoint(pth)
+tmp = Template("sleeping_with_cover",points)
+classes.append(tmp)
+
+pth = "C://Users//Andrew//Downloads//HCI_Project//M_2.mp4" #path of video 
+points = getPoint(pth)
+tmp = Template("sitting",points)
+classes.append(tmp)
+
+pth = "C://Users//Andrew//Downloads//HCI_Project//M_3.mp4" #path of video 
+points = getPoint(pth)
+tmp = Template("walking_with_eyes_opened",points)
+classes.append(tmp)
+
+pth = "C://Users//Andrew//Downloads//HCI_Project//M_4.mp4" #path of video 
+points = getPoint(pth)
+tmp = Template("walking_with_eyes_closed",points)
+classes.append(tmp)
+
+pth = "C://Users//Andrew//Downloads//HCI_Project//M_5.mp4" #path of video 
+points = getPoint(pth)
+tmp = Template("awake",points)
+classes.append(tmp)
+
+pth = "C://Users//Andrew//Downloads//HCI_Project//M_6.mp4" #path of video 
+points = getPoint(pth)
+tmp = Template("standing",points)
+classes.append(tmp)
+
+pth = "C://Users//Andrew//Downloads//HCI_Project//M_7.mp4" #path of video 
+points = getPoint(pth)
+tmp = Template("sleeping_without_cover",points)
+classes.append(tmp)
+
+pth = "C://Users//Andrew//Downloads//HCI_Project//M_8.mp4" #path of video 
+points = getPoint(pth)
+tmp = Template("sleeping_left",points)
+classes.append(tmp)
+
+print(classes)
+
+
