@@ -1,15 +1,28 @@
-gaze = GazeTracking()
-gaze.refresh(frame)
-        new_frame = gaze.annotated_frame()
-        text = ""
-        if gaze.is_right():
-            text = "Looking right"
-        elif gaze.is_left():
-            text = "Looking left"
-        elif gaze.is_center():
-            text = "Looking center"
-        elif gaze.is_blinking():
-            text = "Blinking"
+closed_eye_timer = None
+closed_eye_duration = 0
+sleep_threshold = 5  # Number of seconds to consider as sleeping
+if gaze.is_right():
+        text = "Looking right"
+    elif gaze.is_left():
+        text = "Looking left"
+    elif gaze.is_center():
+        text = "Looking center"
+    elif gaze.is_blinking():
+        if closed_eye_timer is None:
+            # Start the timer if the eyes are closed for the first time
+            closed_eye_timer = time.time()
+        else:
+            # Calculate the duration of closed eyes
+            closed_eye_duration = time.time() - closed_eye_timer
 
-        cv2.putText(new_frame, text, (60, 60), cv2.FONT_HERSHEY_DUPLEX, 2, (255, 0, 0), 2)
-        print(text)
+            if closed_eye_duration >= sleep_threshold:
+                text = "He is sleeping"
+            else:
+                text = "Blinking"
+    else:
+        # Reset the timer if the eyes are open
+        closed_eye_timer = None
+        closed_eye_duration = 0
+
+    cv2.putText(frame, text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+
