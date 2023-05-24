@@ -1,0 +1,84 @@
+!pip install opencv-python numpy scipy
+import cv2
+import scipy.stats as stats
+import numpy as np
+
+# Function to extract data from a video
+def extract_data_from_video(video_path):
+    # Open the video file
+    cap = cv2.VideoCapture(video_path)
+    
+    # List to store the extracted data
+    data = []
+    
+    # Read frames and extract relevant data
+    while cap.isOpened():
+        ret, frame = cap.read()
+        
+        if not ret:
+            break
+        
+        # Process the frame and extract relevant information
+        # Replace this with your own video processing logic
+        # For example, you might extract motion, color, or other features
+        
+        # Convert the frame to grayscale for simplicity
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        
+        # Compute the average pixel intensity as an example
+        avg_intensity = np.mean(gray)
+        
+        # Append the extracted data to the list
+        data.append(avg_intensity)
+        
+        # Display the frame (optional)
+        cv2.imshow('Frame', frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+    
+    # Release the video capture and close windows
+    cap.release()
+    cv2.destroyAllWindows()
+    
+    return data
+
+# List of video paths
+video_paths = ["C://Users//Andrew//Downloads//HCI_Project//M_1.mp4", "C://Users//Andrew//Downloads//HCI_Project//M_2.mp4"]
+
+# List to store the extracted data for each condition
+Right_Hand_Detection = []
+Left_Hand_Detection = []
+
+# Extract data from each video and assign it to the respective condition list
+for video_path in video_paths:
+    data = extract_data_from_video(video_path)
+    
+    # Assign the extracted data to the appropriate condition list
+    # Replace the condition assignment based on your video processing logic
+    if 'Right_Hand_Detection' in video_path:
+        Right_Hand_Detection.extend(data)
+    elif 'Left_Hand_Detection' in video_path:
+        Left_Hand_Detection.extend(data)
+
+# Combine all conditions into a single list
+all_conditions = Right_Hand_Detection + Left_Hand_Detection
+
+# Filter out nan values from the data arrays
+Right_Hand_Detection = np.array(Right_Hand_Detection)
+Left_Hand_Detection = np.array(Left_Hand_Detection)
+
+Right_Hand_Detection = Right_Hand_Detection[~np.isnan(Right_Hand_Detection)]
+Left_Hand_Detection = Left_Hand_Detection[~np.isnan(Left_Hand_Detection)]
+
+# Create a list of group labels
+group_labels = ['Right_Hand_Detection'] * len(Right_Hand_Detection) + ['Left_Hand_Detection'] * len(Left_Hand_Detection)
+
+# Perform one-way ANOVA
+fvalue, pvalue = stats.f_oneway(Right_Hand_Detection, Left_Hand_Detection)
+
+# Print the ANOVA results
+print("One-way ANOVA results:")
+print("F-value:", fvalue)
+print("p-value:", pvalue)
+
+# Rest of the code for computing group means, sum of squares, degrees of freedom, etc.
